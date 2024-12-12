@@ -4,6 +4,7 @@ using Infrastructure;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -34,13 +35,23 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();  // Habilita o uso de anotações no Swagger, como [SwaggerOperation]
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Doqr-API", Version = "v1" });
+});
+
 var app = builder.Build();
 
 app.UseCors("AllowSpecificOrigin");
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
