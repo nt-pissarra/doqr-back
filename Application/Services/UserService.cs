@@ -34,6 +34,22 @@ namespace Application.Services
             return usersDto;
         }
 
+        public async Task<List<UserDto>> GetUsersByNameAsync(string name)
+        {
+        
+            var users = await _userRepository.GetUsersByNameAsync(name);
+
+            var usersDto = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                var userDto = ModelToDto(user);
+                usersDto.Add(userDto);
+            }
+
+            return usersDto;
+        }
+
         public async Task<UserDto?> GetUserAsync(int Id)
         {
             var user = await _userRepository.GetUserAsync(Id);
@@ -89,7 +105,6 @@ namespace Application.Services
             user.Email = string.IsNullOrEmpty(userDto.Email) ? user.Email : userDto.Email;
             user.CPF = string.IsNullOrEmpty(userDto.CPF) ? user.CPF : userDto.CPF;
             user.Phone = string.IsNullOrEmpty(userDto.Phone) ? user.Phone : userDto.Phone;
-            user.Mobile = string.IsNullOrEmpty(userDto.Mobile) ? user.Mobile : userDto.Mobile;
             user.BirthDate = !userDto.BirthDate.HasValue ? user.BirthDate : userDto.BirthDate!.Value;
             user.EmploymentType = !userDto.EmploymentType.HasValue ? user.EmploymentType : userDto.EmploymentType!.Value;
             user.Status = !userDto.Status.HasValue ? user.Status : userDto.Status!.Value;
@@ -106,7 +121,6 @@ namespace Application.Services
                 Email = user.Email,
                 CPF = user.CPF,
                 Phone = user.Phone,
-                Mobile = user.Mobile,
                 BirthDate = user.BirthDate,
                 EmploymentType = user.EmploymentType,
                 Status = user.Status
@@ -122,7 +136,6 @@ namespace Application.Services
                 Email = user.Email,
                 CPF = user.CPF,
                 Phone = user.Phone,
-                Mobile = user.Mobile,
                 BirthDate = user.BirthDate,
                 EmploymentType = user.EmploymentType,
                 Status = user.Status

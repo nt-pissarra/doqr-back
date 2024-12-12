@@ -21,6 +21,15 @@ namespace Infrastructure.Repositories
             return users;
         }
 
+        public async Task<IEnumerable<User>> GetUsersByNameAsync(string name)
+        {
+            var users = await _context.Users
+                .Where(u => u.Name.Contains(name))  
+                .ToListAsync(); ;
+
+            return users;
+        }
+
         public async Task<User?> GetUserAsync(int Id)
         {
             var user = await _context.Users.FindAsync(Id);

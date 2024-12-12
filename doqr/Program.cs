@@ -8,7 +8,17 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // Substitua pelo domínio do seu front-end
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,6 +35,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
+
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

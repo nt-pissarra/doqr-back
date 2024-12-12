@@ -20,9 +20,11 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetAllUsers()
+        public async Task<ActionResult<List<UserDto>>> GetAllUsers([FromQuery] string? name)
         {
-            var users = await _userService.GetAllUsersAsync();
+            var users = string.IsNullOrEmpty(name)
+                ? await _userService.GetAllUsersAsync()
+                : await _userService.GetUsersByNameAsync(name);
 
             return Ok(users);
         }
