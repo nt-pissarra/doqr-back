@@ -28,6 +28,20 @@ namespace API.Controllers
         }
 
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> GetUser(int id)
+        {
+            var user = await _userService.GetUserAsync(id);
+
+            if (user == null)
+            {
+                return NotFound($"Usuário {id} não encontrado");
+            }
+
+            return Ok(user);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto userDto)
         {

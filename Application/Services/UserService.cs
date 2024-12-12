@@ -14,7 +14,7 @@ namespace Application.Services
 
         public UserService(IUserRepository userRepository)
         {
-                _userRepository = userRepository;
+            _userRepository = userRepository;
         }
 
 
@@ -24,14 +24,24 @@ namespace Application.Services
 
             var usersDto = new List<UserDto>();
 
-            foreach (var user in users) 
-            { 
+            foreach (var user in users)
+            {
                 var userDto = ModelToDto(user);
                 usersDto.Add(userDto);
             }
 
             return usersDto;
-                
+        }
+
+        public async Task<UserDto?> GetUserAsync(int Id)
+        {
+            var user = await _userRepository.GetUserAsync(Id);
+
+            if (user == null) return null;
+
+            var userDto = ModelToDto(user);
+
+            return userDto;
         }
 
         public async Task<UserDto> CreateUserAsync(CreateUserDto user)
@@ -60,6 +70,8 @@ namespace Application.Services
                 Status = user.Status
             };
         }
+
+
 
         private UserDto ModelToDto(User user)
         {
@@ -91,7 +103,6 @@ namespace Application.Services
                 Status = userDto.Status
             };
         }
-
     }
 
 }

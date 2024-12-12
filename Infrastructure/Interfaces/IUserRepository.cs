@@ -7,6 +7,8 @@ namespace Infrastructure.Interfaces
     {
         public Task<IEnumerable<User>> GetAllUsersAsync();
 
+        public Task<User> GetUserAsync(int Id);
+
         public Task<User> CreateUserAsync(User user);
     }
 }
