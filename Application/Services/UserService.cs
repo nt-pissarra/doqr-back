@@ -108,6 +108,7 @@ namespace Application.Services
             user.BirthDate = !userDto.BirthDate.HasValue ? user.BirthDate : userDto.BirthDate!.Value;
             user.EmploymentType = !userDto.EmploymentType.HasValue ? user.EmploymentType : userDto.EmploymentType!.Value;
             user.Status = !userDto.Status.HasValue ? user.Status : userDto.Status!.Value;
+            user.UpdatedAt = DateTime.UtcNow;
 
             return user;
         }

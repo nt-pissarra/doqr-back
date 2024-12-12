@@ -12,4 +12,6 @@ public class User
     public DateTime BirthDate { get; set; }
     public EmploymentType EmploymentType { get; set; }
     public Status Status { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
 }

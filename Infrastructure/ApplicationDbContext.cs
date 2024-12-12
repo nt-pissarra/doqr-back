@@ -16,7 +16,7 @@ namespace Infrastructure
 
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
-                entity.SetTableName(ToSnakeCase(entity.GetTableName()));
+                entity.SetTableName(ToSnakeCase(entity.GetTableName()!));
 
                 foreach (var property in entity.GetProperties())
                 {
