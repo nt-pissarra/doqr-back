@@ -5,6 +5,6 @@ namespace Infrastructure.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<List<User>> GetAllUsersAsync();
+        public Task<IEnumerable<User>> GetAllUsersAsync();
     }
 }
