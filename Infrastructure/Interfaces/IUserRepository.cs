@@ -7,8 +7,12 @@ namespace Infrastructure.Interfaces
     {
         public Task<IEnumerable<User>> GetAllUsersAsync();
 
-        public Task<User> GetUserAsync(int Id);
+        public Task<User?> GetUserAsync(int Id);
 
         public Task<User> CreateUserAsync(User user);
+
+        public Task<User> UpdateUserAsync(User user);
+        
+        public Task<bool> DeleteUserAsync(User user);
     }
 }

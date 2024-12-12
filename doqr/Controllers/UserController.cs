@@ -49,5 +49,30 @@ namespace API.Controllers
 
             return Ok(users);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] UpdateUserDto userDto)
+        {
+            var user = await _userService.UpdateUserAsync(id, userDto);
+
+            if (user == null)
+            {
+                return NotFound($"Usuário {id} não encontrado");
+            }
+
+            return Ok(user);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var success = await _userService.DeleteUserAsync(id);
+           
+            if(!success) {return NotFound($"Usuário {id} não encontrado");}
+
+            return NoContent();
+        }  
+
     }
 }

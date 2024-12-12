@@ -3,6 +3,7 @@
 using Application.Dtos;
 using Application.Interfaces;
 using Domain.Models;
+using Domain.Models.Enums;
 using Infrastructure.Interfaces;
 
 namespace Application.Services
@@ -39,9 +40,7 @@ namespace Application.Services
 
             if (user == null) return null;
 
-            var userDto = ModelToDto(user);
-
-            return userDto;
+            return ModelToDto(user);
         }
 
         public async Task<UserDto> CreateUserAsync(CreateUserDto user)
@@ -50,13 +49,56 @@ namespace Application.Services
 
             var createdUser = await _userRepository.CreateUserAsync(newUser);
 
-            var userDto = ModelToDto(createdUser);
+            return ModelToDto(createdUser);
+        }
 
-            return userDto;
+        public async Task<UserDto?> UpdateUserAsync(int Id, UpdateUserDto userDto)
+        {
+            var user = await _userRepository.GetUserAsync(Id);
+
+            if (user == null)
+            {
+                return null; 
+            }
+
+            user = UpdateUserDtoToModel(user, userDto);
+
+            await _userRepository.UpdateUserAsync(user);
+
+            return ModelToDto(user);
+        }
+
+        public async Task<bool> DeleteUserAsync(int Id)
+        {
+            var user = await _userRepository.GetUserAsync(Id);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            await _userRepository.DeleteUserAsync(user);
+
+            return true;
         }
 
 
-        private User DtoToCreateUserModel(CreateUserDto user)
+        private static User UpdateUserDtoToModel(User user, UpdateUserDto userDto)
+        {
+            user.Name = string.IsNullOrEmpty(userDto.Name) ? user.Name : userDto.Name;
+            user.Email = string.IsNullOrEmpty(userDto.Email) ? user.Email : userDto.Email;
+            user.CPF = string.IsNullOrEmpty(userDto.CPF) ? user.CPF : userDto.CPF;
+            user.Phone = string.IsNullOrEmpty(userDto.Phone) ? user.Phone : userDto.Phone;
+            user.Mobile = string.IsNullOrEmpty(userDto.Mobile) ? user.Mobile : userDto.Mobile;
+            user.BirthDate = !userDto.BirthDate.HasValue ? user.BirthDate : userDto.BirthDate!.Value;
+            user.EmploymentType = !userDto.EmploymentType.HasValue ? user.EmploymentType : userDto.EmploymentType!.Value;
+            user.Status = !userDto.Status.HasValue ? user.Status : userDto.Status!.Value;
+
+            return user;
+        }
+
+
+        private static User DtoToCreateUserModel(CreateUserDto user)
         {
             return new User
             {
@@ -71,9 +113,7 @@ namespace Application.Services
             };
         }
 
-
-
-        private UserDto ModelToDto(User user)
+        private static UserDto ModelToDto(User user)
         {
             return new UserDto
             {
@@ -86,21 +126,6 @@ namespace Application.Services
                 BirthDate = user.BirthDate,
                 EmploymentType = user.EmploymentType,
                 Status = user.Status
-            };
-        }
-
-        private User DtoToModel(UserDto userDto)
-        {
-            return new User
-            {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                CPF = userDto.CPF,
-                Phone = userDto.Phone,
-                Mobile = userDto.Mobile,
-                BirthDate = userDto.BirthDate,
-                EmploymentType = userDto.EmploymentType,
-                Status = userDto.Status
             };
         }
     }

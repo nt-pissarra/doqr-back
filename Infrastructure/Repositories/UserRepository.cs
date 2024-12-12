@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
             return users;
         }
 
-        public async Task<User> GetUserAsync(int Id)
+        public async Task<User?> GetUserAsync(int Id)
         {
             var user = await _context.Users.FindAsync(Id);
 
@@ -36,6 +36,21 @@ namespace Infrastructure.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Entity.Id);
         }
 
+        public async Task<User> UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
 
+            return user;
+        }
+
+        public async Task<bool> DeleteUserAsync(User user)
+        {
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
