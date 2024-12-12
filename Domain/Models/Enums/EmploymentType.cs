@@ -3,7 +3,7 @@ namespace Domain.Models.Enums
 {
     public enum EmploymentType
     { 
-        CLT,
-        PJ
+        CLT = 0,
+        PJ = 1
     }
 }

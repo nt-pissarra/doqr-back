@@ -20,5 +20,14 @@ namespace Infrastructure.Repositories
 
             return users;
         }
+
+        public async Task<User> CreateUserAsync(User user)
+        {
+            var newUser = await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == newUser.Entity.Id);
+        }
+
     }
 }

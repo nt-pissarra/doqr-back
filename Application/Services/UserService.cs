@@ -34,6 +34,32 @@ namespace Application.Services
                 
         }
 
+        public async Task<UserDto> CreateUserAsync(CreateUserDto user)
+        {
+            var newUser = DtoToCreateUserModel(user);
+
+            var createdUser = await _userRepository.CreateUserAsync(newUser);
+
+            var userDto = ModelToDto(createdUser);
+
+            return userDto;
+        }
+
+
+        private User DtoToCreateUserModel(CreateUserDto user)
+        {
+            return new User
+            {
+                Name = user.Name,
+                Email = user.Email,
+                CPF = user.CPF,
+                Phone = user.Phone,
+                Mobile = user.Mobile,
+                BirthDate = user.BirthDate,
+                EmploymentType = user.EmploymentType,
+                Status = user.Status
+            };
+        }
 
         private UserDto ModelToDto(User user)
         {
@@ -51,7 +77,7 @@ namespace Application.Services
             };
         }
 
-        private User UserToDto(UserDto userDto)
+        private User DtoToModel(UserDto userDto)
         {
             return new User
             {

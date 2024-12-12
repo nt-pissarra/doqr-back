@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -23,6 +23,15 @@ namespace API.Controllers
         public async Task<ActionResult<List<UserDto>>> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
+
+            return Ok(users);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto userDto)
+        {
+            var users = await _userService.CreateUserAsync(userDto);
 
             return Ok(users);
         }
